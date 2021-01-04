@@ -43,16 +43,45 @@ class LinkedList(object):
     def print_ll(self):
         print("The data is: ")
         temp = self.head
-        if self.circular:
-            while True:
-                print(temp.data)
-                temp = temp.next
-                if temp == self.head:
-                    break
-        else:
-            while temp:
-                print(temp.data)
-                temp = temp.next
+
+        if temp:
+            if self.circular:
+                while True:
+                    print(temp.data, end="->")
+                    temp = temp.next
+                    if temp == self.head:
+                        break
+                print()
+            else:
+                while temp:
+                    print(temp.data, end='->')
+                    temp = temp.next
+                print()
+
+    def split(self):
+        center = self.head
+        head = self.head
+        index = 1
+        while True:
+            if index % 2 == 0:
+                center = center.next
+            head = head.next
+            index += 1
+            if head.next is None:
+                break
+        headB = center.next
+        center.next = None
+        return headB
+
+    def reverse(self):
+        prev = None
+        current = self.head
+        while current is not None:
+            next = current.next
+            current.next = prev
+            prev = current
+            current = next
+        self.head = prev
 
     def delete_key(self, x, first_occ=True):
         temp = self.head
@@ -109,8 +138,8 @@ class LinkedList(object):
                     temp = temp.next
 
 
-linked_list = LinkedList(circular=True)
-
+linked_list = LinkedList(circular=False)
+linked_list.print_ll()
 linked_list.push_head(1)
 linked_list.push_head(2)
 linked_list.push_head(3)
@@ -119,22 +148,39 @@ linked_list.push_head(4)
 linked_list.push_tail(5)
 linked_list.push_tail(6)
 linked_list.push_tail(7)
+# linked_list.push_tail(8)
+
+# linked_list.print_ll()
+# print('after deletion:', 3)
+# linked_list.delete_key(3)
+# linked_list.print_ll()
+# print('after deletion:', 4)
+# linked_list.delete_key(4)
+# linked_list.print_ll()
+# print('after deletion:', 7)
+# linked_list.delete_key(7)
+# linked_list.print_ll()
+# print('after adding:', 7)
+# linked_list.push_tail(7)
+# linked_list.print_ll()
+# print('after adding:', 7)
+# linked_list.push_head(7)
+# linked_list.print_ll()
+head = linked_list.split()
+
+prev = None
+current = head
+while current is not None:
+    next = current.next
+    current.next = prev
+    prev = current
+    current = next
+head = prev
+while head:
+    print(head.data, end="->")
+    head = head.next
+print()
 
 linked_list.print_ll()
-print('after deletion:', 3)
-linked_list.delete_key(3)
-linked_list.print_ll()
-print('after deletion:', 4)
-linked_list.delete_key(4)
-linked_list.print_ll()
-print('after deletion:', 7)
-linked_list.delete_key(7)
-linked_list.print_ll()
-
-print('after adding:', 7)
-linked_list.push_tail(7)
-linked_list.print_ll()
-
-print('after adding:', 7)
-linked_list.push_head(7)
+linked_list.reverse()
 linked_list.print_ll()

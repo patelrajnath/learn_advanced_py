@@ -67,7 +67,7 @@ class LinkedList(object):
                 center = center.next
             head = head.next
             index += 1
-            if head.next is None:
+            if head is None:
                 break
         headB = center.next
         center.next = None
@@ -82,6 +82,31 @@ class LinkedList(object):
             prev = current
             current = next
         self.head = prev
+
+    def reorder(self):
+        head = self.split()
+
+        # Reverse the second halve
+        prev = None
+        current = head
+        while current is not None:
+            next = current.next
+            current.next = prev
+            prev = current
+            current = next
+        head = prev
+
+        # Reorder the list
+        prev_ll2 = head
+        current = self.head
+        while current is not None:
+            next = current.next
+            if prev_ll2:
+                next_prev_ll2 = prev_ll2.next
+                current.next = prev_ll2
+                prev_ll2.next = next
+                prev_ll2 = next_prev_ll2
+            current = next
 
     def delete_key(self, x, first_occ=True):
         temp = self.head
@@ -150,7 +175,7 @@ linked_list.push_tail(6)
 linked_list.push_tail(7)
 # linked_list.push_tail(8)
 
-# linked_list.print_ll()
+linked_list.print_ll()
 # print('after deletion:', 3)
 # linked_list.delete_key(3)
 # linked_list.print_ll()
@@ -166,21 +191,8 @@ linked_list.push_tail(7)
 # print('after adding:', 7)
 # linked_list.push_head(7)
 # linked_list.print_ll()
-head = linked_list.split()
 
-prev = None
-current = head
-while current is not None:
-    next = current.next
-    current.next = prev
-    prev = current
-    current = next
-head = prev
-while head:
-    print(head.data, end="->")
-    head = head.next
-print()
-
+linked_list.reorder()
 linked_list.print_ll()
 linked_list.reverse()
 linked_list.print_ll()
